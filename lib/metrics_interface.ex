@@ -12,7 +12,7 @@ defmodule Metrics.Interface do
   @epoch_seconds 719528 * 24 * 3600
   @tcp_connect_opts [:binary, packet: 0]
 
-  @default_carbon_host_port {"127.0.0.1", 2003}
+  @default_carbon_host_port "127.0.0.1:2003"
   @default_prefix "metric."
   @default_interval 60_000 # 60 sec
 
@@ -53,7 +53,7 @@ defmodule Metrics.Interface do
   Initialize the interface state and immediately timeout, which triggers a send
   """
   def init([]) do
-    host_port = get_env(:carbon_host_port, @default_carbon_host_port)
+    host_port = tupleize(get_env(:carbon_host_port, @default_carbon_host_port))
     prefix = get_env(:prefix, @default_prefix)
     interval = get_env(:interval, @default_interval)
     info("init #{inspect host_port} #{inspect prefix} #{inspect interval}")
@@ -185,12 +185,12 @@ defmodule Metrics.Interface do
     Application.get_env(@app_env, key, default)    
   end
 
-  # defp debug(msg) do
-  #   Logger.debug("#{inspect @module}." <>  msg)
-  # end
-
-  defp info(msg) do
-    Logger.info("#{inspect @module}." <>  msg)
+  # convert e.g. "localhost:3000" to {"localhost", 3000}
+  defp tupleize(host_port_str) when is_binary(host_port_str) do
+    [host, port] = String.split(host_port_str, ":")
+    {host, String.to_integer(port)}
   end
 
+  # defp debug(msg), do: Logger.debug("#{inspect @module}." <>  msg)
+  defp info(msg), do: Logger.info("#{inspect @module}." <>  msg)
 end
