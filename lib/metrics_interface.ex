@@ -185,12 +185,8 @@ defmodule Metrics.Interface do
     Application.get_env(@app_env, key, default)    
   end
 
-  # defp debug(msg) do
-  #   Logger.debug("#{inspect @module}." <>  msg)
-  # end
-
-  defp info(msg) do
-    Logger.info("#{inspect @module}." <>  msg)
   end
 
+  # defp debug(msg), do: Logger.debug("#{inspect @module}." <>  msg)
+  defp info(msg), do: Logger.info("#{inspect @module}." <>  msg)
 end
