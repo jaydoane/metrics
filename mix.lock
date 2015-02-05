@@ -1,1 +1,2 @@
-%{"reprise": {:hex, :reprise, "0.3.0"}}
+%{"reprise": {:hex, :reprise, "0.3.0"},
+  "tcp_listener": {:git, "git://github.com/jaydoane/tcp-listener.git", "a964d333df59c52f1f5432dd09306ab5f8ffa2ae", []}}
