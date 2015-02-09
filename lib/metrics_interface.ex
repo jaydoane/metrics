@@ -133,8 +133,8 @@ defmodule Metrics.Interface do
     end
   end
   # try to send if socket is open
-  defp send(%{socket: socket, localhost: localhost, metrics: metrics}=state) do
-    data = format(localhost, metrics)
+  defp send(%{socket: socket, prefix: prefix, localhost: localhost, metrics: metrics}=state) do
+    data = format(prefix, localhost, metrics)
     case :gen_tcp.send(socket, data) do
       :ok ->
         %{state | metrics: %{}}
@@ -171,9 +171,9 @@ defmodule Metrics.Interface do
     end
   end
 
-  def format(localhost, metrics) do
+  def format(prefix, localhost, metrics) do
     ts = timestamp()
-    for {metric, counter} <- metrics, do: "#{localhost}.#{metric} #{counter} #{ts}\n"
+    for {metric, counter} <- metrics, do: "#{prefix}#{localhost}.#{metric} #{counter} #{ts}\n"
   end
 
   defp timestamp() do
