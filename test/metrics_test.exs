@@ -12,4 +12,9 @@ defmodule Metrics.Test do
     Application.stop :tcp_listener
   end
 
+  test "message is correctly formatted" do
+    ["mbp.metric.apples 1 1423619770\n", "mbp.metric.oranges 10 1423619770\n"] = 
+      Metrics.Interface.format("mbp", "metric.", %{apples: 1, oranges: 10}, 1423619770)
+  end
+
 end
